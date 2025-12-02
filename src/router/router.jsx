@@ -13,6 +13,10 @@ export const router = createBrowserRouter([
         {
             index:true,
             Component: Home
+        },
+        {
+          path:"*",
+          element:<div className="text-error">404 Not Found</div>
         }
     ]
     
