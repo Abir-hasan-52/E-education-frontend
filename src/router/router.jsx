@@ -1,6 +1,9 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../LayOuts/RootLayout";
 import Home from "../pages/Home/Home";
+import Login from "../pages/Authentication/Login/Login";
+import Register from "../pages/Authentication/Register/Register";
+import AdminRegister from "../pages/Authentication/AdminRegister/AdminRegister";
  
  
  
@@ -17,6 +20,18 @@ export const router = createBrowserRouter([
         {
           path:"*",
           element:<div className="text-error">404 Not Found</div>
+        },
+        {
+          path:"/login",
+          Component: Login
+        },
+        {
+          path:"/register",
+          Component:Register,
+        },
+        {
+          path:"/admin-register",
+          Component: AdminRegister,
         }
     ]
     
