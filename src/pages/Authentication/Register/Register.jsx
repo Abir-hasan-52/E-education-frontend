@@ -1,60 +1,157 @@
-import React from "react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm();
+
+  const [showPass, setShowPass] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  const password = watch("password");
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-100 to-white p-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 text-center space-y-6">
         <h1 className="text-2xl font-semibold">Create an account</h1>
         <p className="text-gray-500 text-sm -mt-4">
-          Sign up to start creating documents and collaborating.
+          Create your SkillSpace account to start learning.
         </p>
 
-        <div className="space-y-3 text-left">
-          <div>
-            <label className="text-sm font-medium">Full Name</label>
-            <input
-              type="text"
-              className="w-full mt-1 p-3 rounded-xl bg-gray-100 focus:outline-none"
-              placeholder="Enter your full name"
-            />
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div className="space-y-3 text-left">
+            {/* Full Name */}
+            <div>
+              <label className="text-sm font-medium">Full Name</label>
+              <input
+                type="text"
+                {...register("fullName", { required: "Full name is required" })}
+                className={`w-full mt-1 p-3 rounded-xl bg-gray-100 focus:outline-none focus:ring-2 ${
+                  errors.fullName ? "focus:ring-red-400" : "focus:ring-primary/40"
+                }`}
+                placeholder="Enter your full name"
+              />
+              {errors.fullName && (
+                <p className="text-xs text-red-500 mt-1">{errors.fullName.message}</p>
+              )}
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="text-sm font-medium">Email</label>
+              <input
+                type="email"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Enter a valid email",
+                  },
+                })}
+                className={`w-full mt-1 p-3 rounded-xl bg-gray-100 focus:outline-none focus:ring-2 ${
+                  errors.email ? "focus:ring-red-400" : "focus:ring-primary/40"
+                }`}
+                placeholder="Enter your email"
+              />
+              {errors.email && (
+                <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>
+              )}
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="text-sm font-medium">Password</label>
+              <div className="relative">
+                <input
+                  type={showPass ? "text" : "password"}
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  })}
+                  className={`w-full mt-1 p-3 rounded-xl bg-gray-100 pr-12 focus:outline-none focus:ring-2 ${
+                    errors.password ? "focus:ring-red-400" : "focus:ring-primary/40"
+                  }`}
+                  placeholder="Create a password"
+                />
+
+                {/* Toggle Icon */}
+                <button
+                  type="button"
+                  onClick={() => setShowPass(!showPass)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
+                >
+                  {showPass ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+
+              {errors.password && (
+                <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>
+              )}
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <label className="text-sm font-medium">Confirm Password</label>
+              <div className="relative">
+                <input
+                  type={showConfirm ? "text" : "password"}
+                  {...register("confirmPassword", {
+                    required: "Please confirm your password",
+                    validate: (value) =>
+                      value === password || "Passwords do not match",
+                  })}
+                  className={`w-full mt-1 p-3 rounded-xl bg-gray-100 pr-12 focus:outline-none focus:ring-2 ${
+                    errors.confirmPassword
+                      ? "focus:ring-red-400"
+                      : "focus:ring-primary/40"
+                  }`}
+                  placeholder="Re-enter password"
+                />
+
+                {/* Toggle Icon */}
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(!showConfirm)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
+                >
+                  {showConfirm ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+
+              {errors.confirmPassword && (
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
           </div>
 
-          <div>
-            <label className="text-sm font-medium">Email</label>
-            <input
-              type="email"
-              className="w-full mt-1 p-3 rounded-xl bg-gray-100 focus:outline-none"
-              placeholder="Enter your email"
-            />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Password</label>
-            <input
-              type="password"
-              className="w-full mt-1 p-3 rounded-xl bg-gray-100 focus:outline-none"
-              placeholder="Create a password"
-            />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Confirm Password</label>
-            <input
-              type="password"
-              className="w-full mt-1 p-3 rounded-xl bg-gray-100 focus:outline-none"
-              placeholder="Re-enter password"
-            />
-          </div>
-        </div>
-
-        <button className="w-full bg-black text-white p-3 rounded-xl text-lg font-medium shadow-md">
-          Sign Up
-        </button>
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full bg-black text-white p-3 rounded-xl text-lg font-medium shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? "Creating..." : "Sign Up"}
+          </button>
+        </form>
 
         <div className="text-gray-500 text-sm">
           Have an account?{" "}
-          <Link to="/login" className="text-red-400">
+          <Link to="/login" className="text-primary font-medium">
             Login
           </Link>
         </div>

@@ -1,12 +1,22 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 import { CgLogIn } from "react-icons/cg";
-import { FaApple } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router";
+import { Link } from "react-router"; 
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+    //  todo: implement login logic here
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-100 to-white p-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-blue-100 to-white p-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 text-center space-y-6">
         <div className="flex justify-center">
           <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center text-2xl">
@@ -15,50 +25,86 @@ const Login = () => {
         </div>
 
         <h1 className="text-2xl font-semibold">Sign in with email</h1>
-        <p className="text-gray-500 text-sm -mt-4">
-          Make a new doc to bring your words, data, and teams together. For free
+        <p className="text-gray-500 text-sm -mt-2">
+          Login to continue your learning journey on SkillSpace.
         </p>
+
         <div className="text-gray-500 text-sm">
-          {" "}
-          Doesn't have an Account?{" "}
-          <Link to="/register" className="text-red-400">
+          Don&apos;t have an account?{" "}
+          <Link to="/register" className="text-primary font-medium">
             Register
-          </Link>{" "}
+          </Link>
         </div>
 
-        <div className="space-y-3 text-left">
-          <div>
-            <label className="text-sm font-medium">Email</label>
-            <input
-              type="email"
-              className="w-full mt-1 p-3 rounded-xl bg-gray-100 focus:outline-none"
-              placeholder="Email"
-            />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Password</label>
-            <div className="relative">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div className="space-y-3 text-left">
+            {/* Email */}
+            <div>
+              <label className="text-sm font-medium">Email</label>
               <input
-                type="password"
-                className="w-full mt-1 p-3 rounded-xl bg-gray-100 focus:outline-none"
-                placeholder="Password"
+                type="email"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Please enter a valid email address",
+                  },
+                })}
+                className={`w-full mt-1 p-3 rounded-xl bg-gray-100 focus:outline-none focus:ring-2 ${
+                  errors.email ? "focus:ring-red-400" : "focus:ring-primary/40"
+                }`}
+                placeholder="you@example.com"
               />
-              <span className="absolute right-4 top-4 text-gray-500">👁️‍🗨️</span>
+              {errors.email && (
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="text-sm font-medium">Password</label>
+              <div className="relative">
+                <input
+                  type="password"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  })}
+                  className={`w-full mt-1 p-3 rounded-xl bg-gray-100 focus:outline-none focus:ring-2 ${
+                    errors.password
+                      ? "focus:ring-red-400"
+                      : "focus:ring-primary/40"
+                  }`}
+                  placeholder="••••••••"
+                />
+              </div>
+              {errors.password && (
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
           </div>
-        </div>
 
-        <button className="w-full bg-black text-white p-3 rounded-xl text-lg font-medium shadow-md">
-          Get Started
-        </button>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full bg-black text-white p-3 rounded-xl text-lg font-medium shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? "Signing in..." : "Get Started"}
+          </button>
+        </form>
 
         <div className="text-gray-500 text-sm">
-          {" "}
-           Only Admin?{" "}
-          <Link to="/admin-register" className="text-red-400">
+          Only admin?{" "}
+          <Link to="/admin-register" className="text-primary font-medium">
             Admin Portal
-          </Link>{" "}
+          </Link>
         </div>
       </div>
     </div>
