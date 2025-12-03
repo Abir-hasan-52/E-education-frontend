@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 const AdminRegister = () => {
   const {
     register,
     handleSubmit,
     watch,
-    setError, 
+    setError,
     formState: { errors, isSubmitting },
   } = useForm();
 
   const { createUser } = useAuth();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  const navigate = useNavigate();
 
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -30,7 +34,7 @@ const AdminRegister = () => {
         type: "manual",
         message: "Invalid Admin Secret Key",
       });
-      return; 
+      return;
     }
 
     try {
@@ -38,9 +42,19 @@ const AdminRegister = () => {
       const result = await createUser(data.email, data.password);
       console.log(result.user);
       //  todo: ekhane pore role "admin" hisebe DB te save korbo
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful",
+        text: `Welcome back, ${data.email}`,
+      });
+      navigate(from, { replace: true });
     } catch (error) {
       console.log(error.message);
-      // todo:  show error message to user
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: error.message,
+      });
       setError("email", {
         type: "manual",
         message: error.message,
@@ -69,7 +83,9 @@ const AdminRegister = () => {
                   required: "Full name is required",
                 })}
                 className={`w-full mt-1 p-3 rounded-xl bg-gray-100 focus:outline-none focus:ring-2 ${
-                  errors.fullName ? "focus:ring-red-400" : "focus:ring-purple-300"
+                  errors.fullName
+                    ? "focus:ring-red-400"
+                    : "focus:ring-purple-300"
                 }`}
                 placeholder="Enter full name"
               />

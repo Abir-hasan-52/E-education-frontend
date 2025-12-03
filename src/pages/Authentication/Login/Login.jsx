@@ -1,8 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { CgLogIn } from "react-icons/cg";
-import { Link } from "react-router"; 
+import { Link, useLocation, useNavigate } from "react-router"; 
 import useAuth from "../../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const {
@@ -10,7 +11,12 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
+
   const {signIn}=useAuth();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  const navigate = useNavigate();
+
 
   const onSubmit = (data) => {
     console.log(data);
@@ -19,9 +25,21 @@ const Login = () => {
     .then(result=>{
       console.log(result.user);
       console.log("User logged in successfully");
+
+      Swal.fire({
+          icon: "success",
+          title: "Login Successful",
+          text: `Welcome back, ${data.email}`,
+        });
+      navigate(from, { replace: true });
     })
     .catch(error=>{
       console.log(error.message);
+       Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: error.message,
+        });
     })
   };
 

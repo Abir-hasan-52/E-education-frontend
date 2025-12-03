@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const {
@@ -11,7 +12,11 @@ const Register = () => {
     watch,
     formState: { errors, isSubmitting },
   } = useForm();
-  const {createUser}=useAuth();
+
+  const { createUser } = useAuth();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  const navigate = useNavigate();
 
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -21,14 +26,24 @@ const Register = () => {
     console.log(data);
     // console.log(createUser);
     createUser(data.email, data.password)
-    .then(result=>{
-       
-      console.log(result.user);
-      // todo: pore ekhane DB te user info save korbo
-    }).catch(error=>{
-      console.log(error.message);
-      // todo: show error message to user
-    })
+      .then((result) => {
+        console.log(result.user);
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful",
+          text: `Welcome back, ${data.email}`,
+        });
+        navigate(from, { replace: true });
+        // todo: pore ekhane DB te user info save korbo
+      })
+      .catch((error) => {
+        console.log(error.message);
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: error.message,
+        });
+      });
   };
 
   return (
@@ -171,7 +186,7 @@ const Register = () => {
         </form>
 
         <div className="text-gray-500 text-sm">
-         Already have an account?{" "}
+          Already have an account?{" "}
           <Link to="/login" className="text-primary font-medium btn-link">
             Login
           </Link>
