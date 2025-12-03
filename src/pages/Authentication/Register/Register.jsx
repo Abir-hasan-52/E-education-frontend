@@ -13,15 +13,14 @@ const Register = () => {
 
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const password = watch("password");
 
   const onSubmit = (data) => {
     console.log(data);
   };
 
-  const password = watch("password");
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-100 to-white p-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-blue-100 to-white p-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 text-center space-y-6">
         <h1 className="text-2xl font-semibold">Create an account</h1>
         <p className="text-gray-500 text-sm -mt-4">
@@ -37,12 +36,16 @@ const Register = () => {
                 type="text"
                 {...register("fullName", { required: "Full name is required" })}
                 className={`w-full mt-1 p-3 rounded-xl bg-gray-100 focus:outline-none focus:ring-2 ${
-                  errors.fullName ? "focus:ring-red-400" : "focus:ring-primary/40"
+                  errors.fullName
+                    ? "focus:ring-red-400"
+                    : "focus:ring-primary/40"
                 }`}
                 placeholder="Enter your full name"
               />
               {errors.fullName && (
-                <p className="text-xs text-red-500 mt-1">{errors.fullName.message}</p>
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.fullName.message}
+                </p>
               )}
             </div>
 
@@ -64,7 +67,9 @@ const Register = () => {
                 placeholder="Enter your email"
               />
               {errors.email && (
-                <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -82,7 +87,9 @@ const Register = () => {
                     },
                   })}
                   className={`w-full mt-1 p-3 rounded-xl bg-gray-100 pr-12 focus:outline-none focus:ring-2 ${
-                    errors.password ? "focus:ring-red-400" : "focus:ring-primary/40"
+                    errors.password
+                      ? "focus:ring-red-400"
+                      : "focus:ring-primary/40"
                   }`}
                   placeholder="Create a password"
                 />
@@ -98,7 +105,9 @@ const Register = () => {
               </div>
 
               {errors.password && (
-                <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 

@@ -14,14 +14,14 @@ const AdminRegister = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showSecret, setShowSecret] = useState(false);
 
+  const password = watch("password");
+
   const onSubmit = (data) => {
     console.log(data);
   };
 
-  const password = watch("password");
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-100 to-white p-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-blue-100 to-white p-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 text-center space-y-6">
 
         <h1 className="text-2xl font-semibold text-purple-600">
