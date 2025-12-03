@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import useAuth from "../../../hooks/useAuth";
 
 const Register = () => {
   const {
@@ -10,6 +11,7 @@ const Register = () => {
     watch,
     formState: { errors, isSubmitting },
   } = useForm();
+  const {createUser}=useAuth();
 
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -17,6 +19,16 @@ const Register = () => {
 
   const onSubmit = (data) => {
     console.log(data);
+    // console.log(createUser);
+    createUser(data.email, data.password)
+    .then(result=>{
+       
+      console.log(result.user);
+      // todo: pore ekhane DB te user info save korbo
+    }).catch(error=>{
+      console.log(error.message);
+      // todo: show error message to user
+    })
   };
 
   return (
@@ -159,8 +171,8 @@ const Register = () => {
         </form>
 
         <div className="text-gray-500 text-sm">
-          Have an account?{" "}
-          <Link to="/login" className="text-primary font-medium">
+         Already have an account?{" "}
+          <Link to="/login" className="text-primary font-medium btn-link">
             Login
           </Link>
         </div>

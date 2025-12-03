@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import useAuth from "../../../hooks/useAuth";
+import { Link } from "react-router";
 
 const AdminRegister = () => {
   const {
     register,
     handleSubmit,
     watch,
+    setError, 
     formState: { errors, isSubmitting },
   } = useForm();
+
+  const { createUser } = useAuth();
 
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -16,14 +21,36 @@ const AdminRegister = () => {
 
   const password = watch("password");
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    //  Secret key check
+    const adminSecretFromEnv = import.meta.env.VITE_ADMIN_SECRET_KEY;
+
+    if (data.adminSecretKey !== adminSecretFromEnv) {
+      setError("adminSecretKey", {
+        type: "manual",
+        message: "Invalid Admin Secret Key",
+      });
+      return; 
+    }
+
+    try {
+      // 2️⃣ Firebase / backend registration
+      const result = await createUser(data.email, data.password);
+      console.log(result.user);
+      //  todo: ekhane pore role "admin" hisebe DB te save korbo
+    } catch (error) {
+      console.log(error.message);
+      // todo:  show error message to user
+      setError("email", {
+        type: "manual",
+        message: error.message,
+      });
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-blue-100 to-white p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-100 to-white p-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 text-center space-y-6">
-
         <h1 className="text-2xl font-semibold text-purple-600">
           Admin Registration
         </h1>
@@ -33,7 +60,6 @@ const AdminRegister = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-3 text-left">
-
             {/* Full Name */}
             <div>
               <label className="text-sm font-medium">Full Name</label>
@@ -92,7 +118,9 @@ const AdminRegister = () => {
                     },
                   })}
                   className={`w-full mt-1 p-3 rounded-xl bg-gray-100 pr-12 focus:outline-none focus:ring-2 ${
-                    errors.password ? "focus:ring-red-400" : "focus:ring-purple-300"
+                    errors.password
+                      ? "focus:ring-red-400"
+                      : "focus:ring-purple-300"
                   }`}
                   placeholder="Create password"
                 />
@@ -104,7 +132,6 @@ const AdminRegister = () => {
                   {showPass ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-
               {errors.password && (
                 <p className="text-xs text-red-500 mt-1">
                   {errors.password.message}
@@ -130,7 +157,6 @@ const AdminRegister = () => {
                   }`}
                   placeholder="Re-enter password"
                 />
-
                 <button
                   type="button"
                   onClick={() => setShowConfirm(!showConfirm)}
@@ -139,7 +165,6 @@ const AdminRegister = () => {
                   {showConfirm ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-
               {errors.confirmPassword && (
                 <p className="text-xs text-red-500 mt-1">
                   {errors.confirmPassword.message}
@@ -165,7 +190,6 @@ const AdminRegister = () => {
                   }`}
                   placeholder="Enter admin secret key"
                 />
-
                 <button
                   type="button"
                   onClick={() => setShowSecret(!showSecret)}
@@ -174,17 +198,14 @@ const AdminRegister = () => {
                   {showSecret ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-
               {errors.adminSecretKey && (
                 <p className="text-xs text-red-500 mt-1">
                   {errors.adminSecretKey.message}
                 </p>
               )}
             </div>
-
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={isSubmitting}
@@ -197,6 +218,12 @@ const AdminRegister = () => {
         <p className="text-gray-500 text-sm mt-2">
           Admin access only • Secure verification
         </p>
+        <h5 className="text-gray-500 text-sm">
+          Already have an account?{" "}
+          <Link to="/login" className="text-purple-600 font-medium">
+            Login here
+          </Link>
+        </h5>
       </div>
     </div>
   );

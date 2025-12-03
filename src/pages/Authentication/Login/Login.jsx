@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { CgLogIn } from "react-icons/cg";
 import { Link } from "react-router"; 
+import useAuth from "../../../hooks/useAuth";
 
 const Login = () => {
   const {
@@ -9,10 +10,19 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
+  const {signIn}=useAuth();
 
   const onSubmit = (data) => {
     console.log(data);
     //  todo: implement login logic here
+    signIn(data.email, data.password)
+    .then(result=>{
+      console.log(result.user);
+      console.log("User logged in successfully");
+    })
+    .catch(error=>{
+      console.log(error.message);
+    })
   };
 
   return (
