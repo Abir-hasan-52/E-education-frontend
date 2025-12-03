@@ -116,8 +116,8 @@ const Navbar = () => {
 
               {/* Dropdown menu */}
               {openDropdown && (
-                <div className="absolute right-0 mt-3 w-64 bg-white border border-red-200 rounded-xl shadow-lg z-50">
-                  <div className="px-4 py-3 bg-gradient-to-br from-red-100 to-red-50 rounded-t-xl">
+                <div className="absolute right-0 mt-3 w-64 bg-white border border-purple-200 rounded-xl shadow-lg z-50">
+                  <div className="px-4 py-3 bg-gradient-to-br from-purple-100 to-purple-50 rounded-t-xl">
                     <h4 className="font-semibold text-gray-800">
                       {user.displayName || "User"}
                     </h4>
@@ -128,7 +128,7 @@ const Navbar = () => {
                     <li>
                       <Link
                         to="/dashboard"
-                        className="block px-4 py-2 hover:bg-red-100 hover:text-red-700 transition"
+                        className="block px-4 py-2 hover:bg-purple-100 hover:text-purple-700 transition"
                         onClick={() => setOpenDropdown(false)}
                       >
                         Dashboard
@@ -137,7 +137,7 @@ const Navbar = () => {
                     <li>
                       <button
                         onClick={handleLogout}
-                        className="w-full text-left px-4 py-2 hover:bg-red-100 hover:text-red-700 transition"
+                        className="w-full text-left px-4 py-2 hover:bg-purple-100 hover:text-purple-700 transition"
                       >
                         Logout
                       </button>

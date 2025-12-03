@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Register = () => {
   const {
@@ -17,6 +18,7 @@ const Register = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -28,6 +30,18 @@ const Register = () => {
     createUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
+
+        axiosSecure
+          .post("/api/auth/register", {
+            name: data.fullName,
+            email: data.email,
+            role: "student",
+            password: data.password,
+          })
+          .then((res) => {
+            console.log(res.data);
+          });
+
         Swal.fire({
           icon: "success",
           title: "Login Successful",
@@ -35,6 +49,12 @@ const Register = () => {
         });
         navigate(from, { replace: true });
         // todo: pore ekhane DB te user info save korbo
+
+        axiosSecure.post("/", {
+          name: data.fullName,
+          email: data.email,
+          role: "student",
+        });
       })
       .catch((error) => {
         console.log(error.message);

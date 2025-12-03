@@ -4,6 +4,7 @@ import { CgLogIn } from "react-icons/cg";
 import { Link, useLocation, useNavigate } from "react-router"; 
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Login = () => {
   const {
@@ -16,6 +17,8 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
+  
 
 
   const onSubmit = (data) => {
@@ -25,6 +28,12 @@ const Login = () => {
     .then(result=>{
       console.log(result.user);
       console.log("User logged in successfully");
+      axiosSecure.post("/api/auth/login",{
+        email:data.email,
+        password:data.password
+      }).then(res=>{
+        console.log(res.data);
+      });
 
       Swal.fire({
           icon: "success",

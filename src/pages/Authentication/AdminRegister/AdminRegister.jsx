@@ -4,6 +4,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AdminRegister = () => {
   const {
@@ -18,6 +19,7 @@ const AdminRegister = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -42,6 +44,15 @@ const AdminRegister = () => {
       const result = await createUser(data.email, data.password);
       console.log(result.user);
       //  todo: ekhane pore role "admin" hisebe DB te save korbo
+      await axiosSecure.post("/api/auth/admin-register", {
+        name: data.fullName,
+        email: data.email,
+        role: "admin",
+        password: data.password,
+        adminSecretKey: data.adminSecretKey,
+      }).then((res) => {
+        console.log(res.data);
+      })
       Swal.fire({
         icon: "success",
         title: "Login Successful",
