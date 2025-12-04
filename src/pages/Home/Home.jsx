@@ -1,11 +1,10 @@
 import React from 'react';
+import Courses from './Courses/Courses';
 
 const Home = () => {
     return (
-        <div>
-            <h1>
-                This is Home Page
-            </h1>
+        <div className='bg-purple-50'>
+             <Courses/>
         </div>
     );
 };

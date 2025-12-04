@@ -4,7 +4,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+// import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const AdminRegister = () => {
   const {
@@ -15,11 +16,12 @@ const AdminRegister = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const { createUser } = useAuth();
+  const { createUser, updateUserProfile } = useAuth();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
-  const axiosSecure = useAxiosSecure();
+  // const axiosSecure = useAxiosSecure();
+  const axiosPublic=useAxiosPublic()
 
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -44,15 +46,28 @@ const AdminRegister = () => {
       const result = await createUser(data.email, data.password);
       console.log(result.user);
       //  todo: ekhane pore role "admin" hisebe DB te save korbo
-      await axiosSecure.post("/api/auth/admin-register", {
-        name: data.fullName,
-        email: data.email,
-        role: "admin",
-        password: data.password,
-        adminSecretKey: data.adminSecretKey,
-      }).then((res) => {
-        console.log(res.data);
+      await axiosPublic
+        .post("/api/auth/admin-register", {
+          name: data.fullName,
+          email: data.email,
+          role: "admin",
+          password: data.password,
+          adminSecretKey: data.adminSecretKey,
+        })
+        .then((res) => {
+          console.log(res.data);
+        });
+
+      // fullname update
+      updateUserProfile({
+        displayName: data.fullName,
       })
+        .then(() => {
+          console.log("User profile updated");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       Swal.fire({
         icon: "success",
         title: "Login Successful",

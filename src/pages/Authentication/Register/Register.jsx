@@ -5,6 +5,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+// import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Register = () => {
   const {
@@ -14,11 +15,13 @@ const Register = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const { createUser } = useAuth();
+  const { createUser, updateUserProfile } = useAuth();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
-  const axiosSecure = useAxiosSecure();
+  // const axiosSecure = useAxiosSecure();
+  const axiosSecure=useAxiosSecure()
+
 
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -41,14 +44,22 @@ const Register = () => {
           .then((res) => {
             console.log(res.data);
           });
-
+          // fullname update
+        updateUserProfile({
+          displayName: data.fullName,
+        })
+          .then(() => {
+            console.log("User profile updated");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
         Swal.fire({
           icon: "success",
           title: "Login Successful",
           text: `Welcome back, ${data.email}`,
         });
         navigate(from, { replace: true });
-        // todo: pore ekhane DB te user info save korbo
 
         axiosSecure.post("/", {
           name: data.fullName,

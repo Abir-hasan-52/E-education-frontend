@@ -9,6 +9,8 @@ import PrivateRoute from "../routes/PrivateRoute";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import AddCourse from "../pages/Dashboard/AddCourse/AddCourse";
 import MyCourses from "../pages/Dashboard/MyCourses/MyCourses";
+import Courses from "../pages/Home/Courses/Courses";
+import CourseDetails from "../pages/Home/Courses/CourseDetails";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +37,13 @@ export const router = createBrowserRouter([
         path: "/admin-register",
         Component: AdminRegister,
       },
+      {
+        path:"/courses",
+        Component:Courses,
+      },{
+        path:"/courses/:id",
+        element: <CourseDetails></CourseDetails>,
+      }
     ],
   },
   {

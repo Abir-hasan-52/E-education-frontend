@@ -18,9 +18,8 @@ const AddCourse = () => {
 
   const axiosSecure = useAxiosSecure();
 
-  // =========================
   // Dynamic field state
-  // =========================
+  
 
   const [learningOutcomeIds, setLearningOutcomeIds] = useState([0]);
 
@@ -28,9 +27,9 @@ const AddCourse = () => {
     { id: 0, lessonIds: [0], quizQuestionIds: [0] },
   ]);
 
-  // =========================
+  
   // Learning outcome handlers
-  // =========================
+   
 
   const addOutcomeField = () => {
     setLearningOutcomeIds((prev) => [...prev, prev[prev.length - 1] + 1]);
@@ -41,9 +40,9 @@ const AddCourse = () => {
     setLearningOutcomeIds((prev) => prev.filter((x) => x !== id));
   };
 
-  // =========================
+   
   // Module handlers
-  // =========================
+ 
 
   const addModule = () => {
     setModules((prev) => [
@@ -61,9 +60,9 @@ const AddCourse = () => {
     setModules((prev) => prev.filter((m) => m.id !== id));
   };
 
-  // =========================
+ 
   // Lesson handlers
-  // =========================
+  
 
   const addLesson = (moduleId) => {
     setModules((prev) =>
@@ -97,9 +96,9 @@ const AddCourse = () => {
     );
   };
 
-  // =========================
+ 
   // Quiz handlers
-  // =========================
+ 
 
   const addQuizQuestion = (moduleId) => {
     setModules((prev) =>
@@ -133,9 +132,9 @@ const AddCourse = () => {
     );
   };
 
-  // =========================
+ 
   // Submit handlers
-  // =========================
+ 
 
   // 🔴 Form error hole Swal alert
   const handleFormError = (formErrors) => {
@@ -147,7 +146,7 @@ const AddCourse = () => {
     });
   };
 
-  // ✅ Real submit (backend POST)
+  //  Real submit (backend POST)
   const submitToBackend = async (data, status) => {
     const coursePayload = {
       ...data,
@@ -196,9 +195,9 @@ const AddCourse = () => {
         onSubmit={handleSubmit(handlePublish, handleFormError)}
         className="space-y-6"
       >
-        {/* =========================
-            COURSE INFORMATION
-           ========================= */}
+       
+            {/* COURSE INFORMATION */}
+           
         <div className="card bg-base-100 shadow-md">
           <div className="card-body space-y-4">
             <div className="flex items-center gap-2">
@@ -406,9 +405,9 @@ const AddCourse = () => {
           </div>
         </div>
 
-        {/* =========================
-            MEDIA & INSTRUCTOR + LEARNING OUTCOMES
-           ========================= */}
+        
+            {/* MEDIA & INSTRUCTOR + LEARNING OUTCOMES */}
+           
         <div className="grid md:grid-cols-2 gap-4">
           {/* Media & Instructor */}
           <div className="card bg-base-100 shadow-md">
@@ -439,7 +438,7 @@ const AddCourse = () => {
                 <input
                   type="text"
                   className="input input-bordered w-full"
-                  placeholder="e.g. Tanvir Kamal"
+                  placeholder="e.g.  Abir Hasan"
                   {...register("instructorName")}
                 />
               </div>
@@ -501,9 +500,9 @@ const AddCourse = () => {
           </div>
         </div>
 
-        {/* =========================
-            COURSE CURRICULUM
-           ========================= */}
+       
+         {/* COURSE CURRICULUM */}
+           
         <div className="card bg-base-100 shadow-md">
           <div className="card-body space-y-4">
             <div className="flex items-center justify-between flex-wrap gap-2">
@@ -759,9 +758,9 @@ const AddCourse = () => {
           </div>
         </div>
 
-        {/* =========================
-            PUBLISH BUTTONS
-           ========================= */}
+      
+            {/* PUBLISH BUTTONS */}
+           
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <p className="text-sm text-base-content/70">
             You can save this course as draft or publish it immediately.
