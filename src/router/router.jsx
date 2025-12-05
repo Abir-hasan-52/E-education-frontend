@@ -71,6 +71,12 @@ export const router = createBrowserRouter([
         </AdminRoute>,
       },
       {
+        path: "AllCourse",
+        element:<AdminRoute>
+          <div>All Course - admin only</div>
+        </AdminRoute>,
+      },
+      {
         path: "MyCourses",
         element:<MyCourses></MyCourses>,
       }
