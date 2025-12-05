@@ -4,8 +4,11 @@ import { Link, NavLink, Outlet } from "react-router";
 import { FaDonate } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import Logo from "../pages/shared/Logo";
+import useUserRole from "../hooks/useUserRole";
 
 const DashboardLayOut = () => {
+  const { role, isAdmin, RoleLoading, isStudent } = useUserRole();
+  console.log("dashboard layout role:", role, isStudent);
   return (
     <div className="drawer lg:drawer-open ">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -56,32 +59,83 @@ const DashboardLayOut = () => {
 
           {/* Nav Items */}
 
-          <li>
-            <NavLink
-              to="/dashboard/AddCourse"
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-purple-200 text-purple-700 font-semibold rounded"
-                  : "hover:bg-purple-100 rounded"
-              }
-            >
-              <FaDonate className="inline-block mr-2 text-lg" />
-               Add Course
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/MyCourses"
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-purple-200 text-purple-700 font-semibold rounded"
-                  : "hover:bg-purple-100 rounded"
-              }
-            >
-              <CgProfile className="inline-block mr-2 text-lg" />
-              My Course
-            </NavLink>
-          </li>
+          {/* admin */}
+
+          {!RoleLoading && role === "admin" && isAdmin === true && (
+            <>
+
+              <li>
+                <NavLink
+                  to="/dashboard"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-purple-200 text-purple-700 font-semibold rounded"
+                      : "hover:bg-purple-100 rounded"
+                  }
+                >
+                  <FaDonate className="inline-block mr-2 text-lg" />
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/AddCourse"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-purple-200 text-purple-700 font-semibold rounded"
+                      : "hover:bg-purple-100 rounded"
+                  }
+                >
+                  <FaDonate className="inline-block mr-2 text-lg" />
+                  Add Course
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/AllCourse"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-purple-200 text-purple-700 font-semibold rounded"
+                      : "hover:bg-purple-100 rounded"
+                  }
+                >
+                  <FaDonate className="inline-block mr-2 text-lg" />
+                  All Course
+                </NavLink>
+              </li>
+            </>
+          )}
+          {/* student */}
+          {!RoleLoading && role==="student" && isStudent===true &&
+            <>
+              <li>
+                <NavLink
+                  to="/dashboard"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-purple-200 text-purple-700 font-semibold rounded"
+                      : "hover:bg-purple-100 rounded"
+                  }
+                >
+                  <CgProfile className="inline-block mr-2 text-lg" />
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/MyCourses"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-purple-200 text-purple-700 font-semibold rounded"
+                      : "hover:bg-purple-100 rounded"
+                  }
+                >
+                  <CgProfile className="inline-block mr-2 text-lg" />
+                  My Course
+                </NavLink>
+              </li>
+            </>
+          }
         </ul>
       </div>
     </div>

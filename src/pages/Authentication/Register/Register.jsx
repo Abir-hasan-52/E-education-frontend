@@ -4,8 +4,8 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-// import useAxiosSecure from "../../../hooks/useAxiosSecure";
+
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const Register = () => {
   const {
@@ -19,9 +19,8 @@ const Register = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
-  // const axiosSecure = useAxiosSecure();
-  const axiosSecure=useAxiosSecure()
 
+  const axiosPublic = useAxiosPublic();
 
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -34,7 +33,7 @@ const Register = () => {
       .then((result) => {
         console.log(result.user);
 
-        axiosSecure
+        axiosPublic
           .post("/api/auth/register", {
             name: data.fullName,
             email: data.email,
@@ -44,7 +43,7 @@ const Register = () => {
           .then((res) => {
             console.log(res.data);
           });
-          // fullname update
+        // fullname update
         updateUserProfile({
           displayName: data.fullName,
         })
@@ -61,11 +60,11 @@ const Register = () => {
         });
         navigate(from, { replace: true });
 
-        axiosSecure.post("/", {
-          name: data.fullName,
-          email: data.email,
-          role: "student",
-        });
+        // axiosPublic.post("/", {
+        //   name: data.fullName,
+        //   email: data.email,
+        //   role: "student",
+        // });
       })
       .catch((error) => {
         console.log(error.message);

@@ -11,6 +11,8 @@ import AddCourse from "../pages/Dashboard/AddCourse/AddCourse";
 import MyCourses from "../pages/Dashboard/MyCourses/MyCourses";
 import Courses from "../pages/Home/Courses/Courses";
 import CourseDetails from "../pages/Home/Courses/CourseDetails";
+import Forbidden from "../pages/Forbidden/Forbidden";
+import AdminRoute from "../routes/AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -24,7 +26,11 @@ export const router = createBrowserRouter([
       {
         path: "*",
         element: <div className="text-error">404 Not Found</div>,
-      },
+      },{
+        path:"/forbidden",
+        element:<Forbidden></Forbidden>
+      }
+      ,
       {
         path: "/login",
         Component: Login,
@@ -60,7 +66,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "AddCourse",
-        element:<AddCourse></AddCourse>,
+        element: <AdminRoute>
+          <AddCourse></AddCourse>
+        </AdminRoute>,
       },
       {
         path: "MyCourses",

@@ -4,7 +4,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
-// import useAxiosSecure from "../../../hooks/useAxiosSecure";
+ 
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const AdminRegister = () => {
@@ -20,7 +20,7 @@ const AdminRegister = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
-  // const axiosSecure = useAxiosSecure();
+  
   const axiosPublic=useAxiosPublic()
 
   const [showPass, setShowPass] = useState(false);
