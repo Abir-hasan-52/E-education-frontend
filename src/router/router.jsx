@@ -13,6 +13,13 @@ import Courses from "../pages/Home/Courses/Courses";
 import CourseDetails from "../pages/Home/Courses/CourseDetails";
 import Forbidden from "../pages/Forbidden/Forbidden";
 import AdminRoute from "../routes/AdminRoute";
+import MyEnrolledCourses from "../pages/Dashboard/MyEnrolledCourses/MyEnrolledCourses";
+import CourseLearn from "../pages/Dashboard/MyEnrolledCourses/CourseLearn";
+import AdminBatchEnrollments from "../pages/Dashboard/AdminBatchEnrollments/AdminBatchEnrollments";
+import AdminAssignmentReview from "../pages/Dashboard/AdminAssignmentReview/AdminAssignmentReview";
+import AdminAllCourses from "../pages/Dashboard/AdminAllCourses/AdminAllCourses";
+import AdminCourseEnrollments from "../pages/Dashboard/AdminCourseEnrollments/AdminCourseEnrollments";
+import EditCourse from "../pages/Dashboard/EditCourse/EditCourse";
 
 export const router = createBrowserRouter([
   {
@@ -26,11 +33,11 @@ export const router = createBrowserRouter([
       {
         path: "*",
         element: <div className="text-error">404 Not Found</div>,
-      },{
-        path:"/forbidden",
-        element:<Forbidden></Forbidden>
-      }
-      ,
+      },
+      {
+        path: "/forbidden",
+        element: <Forbidden></Forbidden>,
+      },
       {
         path: "/login",
         Component: Login,
@@ -44,12 +51,13 @@ export const router = createBrowserRouter([
         Component: AdminRegister,
       },
       {
-        path:"/courses",
-        Component:Courses,
-      },{
-        path:"/courses/:id",
+        path: "/courses",
+        Component: Courses,
+      },
+      {
+        path: "/courses/:id",
         element: <CourseDetails></CourseDetails>,
-      }
+      },
     ],
   },
   {
@@ -66,20 +74,57 @@ export const router = createBrowserRouter([
       },
       {
         path: "AddCourse",
-        element: <AdminRoute>
-          <AddCourse></AddCourse>
-        </AdminRoute>,
+        element: (
+          <AdminRoute>
+            <AddCourse></AddCourse>
+          </AdminRoute>
+        ),
       },
       {
         path: "AllCourse",
-        element:<AdminRoute>
-          <div>All Course - admin only</div>
-        </AdminRoute>,
+        element: (
+          <AdminRoute>
+            <AdminAllCourses></AdminAllCourses>
+          </AdminRoute>
+        ),
       },
+      // {
+      //   path: "batch-enrollments",
+      //   element: (
+      //     <AdminRoute>
+      //       <AdminBatchEnrollments />
+      //     </AdminRoute>
+      //   ),
+      // },
+      {
+        path:"edit-course/:id",
+        element: <EditCourse></EditCourse>
+      },
+       {
+      path: "enrollments",
+      element: (
+        <AdminRoute>
+          <AdminCourseEnrollments />
+        </AdminRoute>
+      ),
+    },
+      {
+        path: "assignments-review",
+        element: (
+          <AdminRoute>
+            <AdminAssignmentReview />
+          </AdminRoute>
+        ),
+      }
+      ,
       {
         path: "MyCourses",
-        element:<MyCourses></MyCourses>,
-      }
+        element: <MyEnrolledCourses></MyEnrolledCourses>,
+      },
+      {
+        path: "MyCourses/:courseId/learn",
+        element: <CourseLearn></CourseLearn>,
+      },
     ],
   },
 ]);

@@ -40,6 +40,7 @@ const useAxiosSecure = () => {
             console.log(error);
           });
       }
+      return  Promise.reject(err);
     }
   );
 

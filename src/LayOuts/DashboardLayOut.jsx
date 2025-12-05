@@ -103,6 +103,33 @@ const DashboardLayOut = () => {
                   All Course
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/dashboard/assignments-review"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-purple-200 text-purple-700 font-semibold rounded"
+                      : "hover:bg-purple-100 rounded"
+                  }
+                >
+                  <FaDonate className="inline-block mr-2 text-lg" />
+                   Assignment
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/enrollments"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-purple-200 text-purple-700 font-semibold rounded"
+                      : "hover:bg-purple-100 rounded"
+                  }
+                >
+                  <FaDonate className="inline-block mr-2 text-lg" />
+                    Batch students
+                </NavLink>
+              </li>
+              
             </>
           )}
           {/* student */}
